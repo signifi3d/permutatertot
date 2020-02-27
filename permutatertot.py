@@ -8,6 +8,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-w","--wordlist", required=True, help="wordlist to permutate")
 parser.add_argument("-o","--output", help="output filepath")
 parser.add_argument("-m", "--map", required=True, metavar='MAPFROM:MAPTO', help="character map for permutations")
+parser.add_argument("-i", "--insensitive", action='store_true', help="perform a case-insensitive mapping")
 args = parser.parse_args()
 
 if args.wordlist:
@@ -16,7 +17,9 @@ if args.wordlist:
 
 if args.output:
     global out
-    out = open(args.output, "w")  
+    out = open(args.output, "w") 
+
+case_ins = args.insensitive
 
 if args.map:
     map_strings = args.map.split(":")
@@ -28,7 +31,7 @@ if args.map:
         if map_strings[0][i] in char_map:
             char_map[map_strings[0][i]] = char_map[map_strings[0][i]] + map_strings[1][i]
         else:
-            char_map[map_strings[0][i]] = map_strings[1][i]
+            char_map[(map_strings[0][i].lower() if case_ins else map_strings[0][i])] = map_strings[1][i]
 
 
 def rule_perms(perm, pos):
@@ -36,8 +39,9 @@ def rule_perms(perm, pos):
         return
     final_set.add(perm)
     rule_perms(perm, pos+1)
-    if perm[pos].lower() in char_map:
-        for i in char_map[perm[pos]]:
+    curr_char = perm[pos].lower() if case_ins else perm[pos]
+    if curr_char in char_map:
+        for i in char_map[curr_char]:
             perm = perm[0:pos] + i + perm[pos+1:len(perm)]
             final_set.add(perm)
             rule_perms(perm, pos+1)

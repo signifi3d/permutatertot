@@ -1,6 +1,6 @@
 # permutatertot
 
-usage: python3 permutatertot.py [-h] -w WORDLIST -m MAPFROM:MAPTO [-o OUTPUT]
+usage: python3 permutatertot.py [-h][-i] -w WORDLIST -m MAPFROM:MAPTO [-o OUTPUT]
 
 example:
 
