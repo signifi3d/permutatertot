@@ -6,7 +6,7 @@ char_map = {}
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-w","--wordlist", required=True, help="wordlist to permutate")
-parser.add_argument("-o","--output", required=True, help="output filepath")
+parser.add_argument("-o","--output", help="output filepath")
 parser.add_argument("-m", "--map", required=True, metavar='MAPFROM:MAPTO', help="character map for permutations")
 args = parser.parse_args()
 
@@ -16,7 +16,7 @@ if args.wordlist:
 
 if args.output:
     global out
-    out = open(args.output, "w")
+    out = open(args.output, "w")  
 
 if args.map:
     map_strings = args.map.split(":")
@@ -46,7 +46,11 @@ for lines in inf.read().split('\n'):
     rule_perms(lines, 0)
 
 for i in final_set:
-    out.write(i + '\n')
+    if args.output:
+    	out.write(i + '\n')
+    else:
+        print(i)
 
-out.close()
+if args.output:
+	out.close()
 inf.close()
